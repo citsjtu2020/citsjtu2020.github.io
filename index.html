@@ -119,16 +119,14 @@
 <li>Parallelizable training: all trials have the same scaling properties</li>
 <li>Framework-specific assumptions:  intermediate training progress and checkpoint</li>
 </ol>
-<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/baseline.png" alt></p>
-<p>​                            <center>**Figure 1: Algorithm Procedure of HyerSched and Baselines**</center></p>
+<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/baseline.png" alt="**Figure 1: Algorithm Procedure of HyerSched and Baselines**"></p>
+<p>​                            </p>
 <p>In this paper,authors choose two baseline algorithms: shallow and asynchronous successive halving. Figure 1 shows the procedure of these algorithms. It can be observed that there are some limitations in the state-of-the-art algorithms:</p>
 <ol>
 <li><p><strong>Shallow:</strong> fixed division of exploration and exploitation, can not find a optimal trail</p>
 </li>
 <li><p><strong>ASHA:</strong> deadline-unaware, following the simple resource fairness</p>
-<p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/asha.png" alt="asha"></p>
-<center>**Figure 2: ASHA Procedure**</center>
-
+<p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/asha.png" alt="**Figure 2: ASHA Procedure**"></p>
 </li>
 </ol>
 <p>Let we focus on the ASHA algorithm, Figure 2 presents the scheduling and searching procedure in details. Paper propose the key parameters in ASHA algorithm as follow:</p>
@@ -151,8 +149,8 @@
 <p>​    b.  overhead-aware: checkpoint, restore, network, communication</p>
 </li>
 </ol>
-<h1 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h1><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/overview.png" alt="overview"></p>
-<p>​                                                                        <center>**Figure 3: Overview**</center></p>
+<h1 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h1><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/overview.png" alt="**Figure 3: Overview**"></p>
+<p>​                                                                    </p>
 <p>Figure 3 shows the overview architecture of the HyperSched. In this section,  authors demonstrate the key design ideas and key technologies.</p>
 <h2 id="Key-Technology"><a href="#Key-Technology" class="headerlink" title="Key Technology"></a>Key Technology</h2><ol>
 <li>Deadline-aware exploration policy</li>
@@ -210,9 +208,9 @@ H^{\prime}\left(T-T_{o}\right)>H T</script></li>
 <li><strong><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/walkthrough.html">Ray</a>:</strong> a distributed execution engine</li>
 <li><strong>Tensorflow, Pytorch: </strong>popular deep learning toolkits</li>
 </ol>
-<h2 id="Pseudo-code"><a href="#Pseudo-code" class="headerlink" title="Pseudo code"></a>Pseudo code</h2><h3 id="Experiments-Tutorial"><a href="#Experiments-Tutorial" class="headerlink" title="Experiments Tutorial"></a>Experiments Tutorial</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/exp.png" alt="exp"></p>
-<h3 id="ASHA"><a href="#ASHA" class="headerlink" title="ASHA"></a>ASHA</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/ASHAp.png" alt="ASHAp"></p>
-<h3 id="HyperSched"><a href="#HyperSched" class="headerlink" title="HyperSched"></a>HyperSched</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/hyper.png" alt="hyper"></p>
+<h2 id="Pseudo-code"><a href="#Pseudo-code" class="headerlink" title="Pseudo code"></a>Pseudo code</h2><h3 id="Experiments-Tutorial"><a href="#Experiments-Tutorial" class="headerlink" title="Experiments Tutorial"></a>Experiments Tutorial</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/exp.png" alt></p>
+<h3 id="ASHA"><a href="#ASHA" class="headerlink" title="ASHA"></a>ASHA</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/ASHAp.png" alt></p>
+<h3 id="HyperSched"><a href="#HyperSched" class="headerlink" title="HyperSched"></a>HyperSched</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/hyper.png" alt></p>
 <h1 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h1><h2 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h2><ol>
 <li>Application-level</li>
 <li>A dynamic  scheduling framework addressed on hyper-parameter search</li>
@@ -375,5 +373,21 @@ H^{\prime}\left(T-T_{o}\right)>H T</script></li>
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
