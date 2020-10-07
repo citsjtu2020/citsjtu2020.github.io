@@ -119,14 +119,14 @@
 <li>Parallelizable training: all trials have the same scaling properties</li>
 <li>Framework-specific assumptions:  intermediate training progress and checkpoint</li>
 </ol>
-<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p>/<img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cbaseline.png"></p>
+<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/baseline.png" alt></p>
 <p>​                                                <strong>Figure 1: Algorithm Procedure of HyerSched and Baselines</strong></p>
 <p>In this paper,authors choose two baseline algorithms: shallow and asynchronous successive halving. Figure 1 shows the procedure of these algorithms. It can be observed that there are some limitations in the state-of-the-art algorithms:</p>
 <ol>
-<li><p><strong>Shallow:</strong> fixed division of exploration and explotation, can not find a optimal trail</p>
+<li><p><strong>Shallow:</strong> fixed division of exploration and exploitation, can not find a optimal trail</p>
 </li>
 <li><p><strong>ASHA:</strong> deadline-unaware, following the simple resource fairness</p>
-<p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Casha.png" alt="asha"></p>
+<p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/asha.png" alt="asha"></p>
 <p>​                                                                <strong>Figure 2: ASHA Procedure</strong></p>
 </li>
 </ol>
@@ -142,7 +142,7 @@
 </li>
 <li><p>ASHA is its pausing criteria</p>
 </li>
-<li><p>Lack of specifical time allocation for actual exploitation of the identified trial</p>
+<li><p>Lack of specific time allocation for actual exploitation of the identified trial</p>
 </li>
 <li><p>Accelerate specific trials by dynamically allocating more resource:</p>
 <p>However, allocating more resource must face two challenges:</p>
@@ -150,7 +150,7 @@
 <p>​    b.  overhead-aware: checkpoint, restore, network, communication</p>
 </li>
 </ol>
-<h1 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h1><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Coverview.png" alt="overview"></p>
+<h1 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h1><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/overview.png" alt="overview"></p>
 <p>​                                                                        Figure 3: Overview</p>
 <p>Figure 3 shows the overview architecture of the HyperSched. In this section,  authors demonstrate the key design ideas and key technologies.</p>
 <h2 id="Key-Technology"><a href="#Key-Technology" class="headerlink" title="Key Technology"></a>Key Technology</h2><ol>
@@ -177,9 +177,16 @@
 <p>​    </p>
 </li>
 </ol>
-<p>$$<br>\left{R * T_{a}, \eta T^{\prime}\right}&lt;T_{n}<br>$$</p>
-<p>$$<br>\begin{aligned}<br>&amp;T_{a}\text{: the time per epoch using one atom<br>}\<br>&amp;T_{n}\text{: the time left until the deadline<br>}\<br>&amp;T^{\prime}\text{: the longest duration of eachrunning trial<br>}<br>\end{aligned}<br>$$</p>
-<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><h3 id="Dynamic-Resource-Allocation"><a href="#Dynamic-Resource-Allocation" class="headerlink" title="Dynamic Resource Allocation"></a>Dynamic Resource Allocation</h3><ol>
+<script type="math/tex; mode=display">
+\left\{R * T_{a}, \eta T^{\prime}\right\}<T_{n}</script><script type="math/tex; mode=display">
+\begin{aligned}
+&T_{a}\text{: the time per epoch using one atom
+}\\
+&T_{n}\text{: the time left until the deadline 
+}\\
+&T^{\prime}\text{: the longest duration of eachrunning trial
+}
+\end{aligned}</script><h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><h3 id="Dynamic-Resource-Allocation"><a href="#Dynamic-Resource-Allocation" class="headerlink" title="Dynamic Resource Allocation"></a>Dynamic Resource Allocation</h3><ol>
 <li>Atoms are uniformly allocated across the currently running trials</li>
 <li>A more exploitative policy such as one that allocates all resources to the top trial may be more effective</li>
 </ol>
@@ -188,17 +195,23 @@
 </li>
 <li><p>Sampling evaluation: profile scaling before beginning the search by sampling different trials</p>
 </li>
-<li><p>Threshold Policy Definition for a job:<br>$$<br>H^{\prime}\left(T-T_{o}\right)&gt;H T<br>$$</p>
-</li>
+<li><p>Threshold Policy Definition for a job:</p>
+<script type="math/tex; mode=display">
+H^{\prime}\left(T-T_{o}\right)>H T</script></li>
 </ol>
-<p>$$<br>\begin{aligned}<br>&amp;T_{o}\text{: startup time}\<br>&amp;T\text{: the time left until deadline}\<br>&amp;H\text{: epochs per second of training procedure with current allocation.}\<br>&amp;H^{\prime}\text{: epochs per second of training procedure with proposed allocation}<br>\end{aligned}<br>$$</p>
-<h1 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h1><h2 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h2><ol>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&T_{o}\text{: startup time}\\
+&T\text{: the time left until deadline}\\
+&H\text{: epochs per second of training procedure with current allocation.}\\
+&H^{\prime}\text{: epochs per second of training procedure with proposed allocation}
+\end{aligned}</script><h1 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h1><h2 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h2><ol>
 <li><strong><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/walkthrough.html">Ray</a>:</strong> a distributed execution engine</li>
-<li>**Tensorflow, Pytorch: **popular deep learning toolkits</li>
+<li><strong>Tensorflow, Pytorch: </strong>popular deep learning toolkits</li>
 </ol>
-<h2 id="Pseudo-code"><a href="#Pseudo-code" class="headerlink" title="Pseudo code"></a>Pseudo code</h2><h3 id="Experiments-Tutorial"><a href="#Experiments-Tutorial" class="headerlink" title="Experiments Tutorial"></a>Experiments Tutorial</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cexp.png" alt="exp"></p>
-<h3 id="ASHA"><a href="#ASHA" class="headerlink" title="ASHA"></a>ASHA</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5CASHAp.png" alt="ASHAp"></p>
-<h3 id="HyperSched"><a href="#HyperSched" class="headerlink" title="HyperSched"></a>HyperSched</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Chyper.png" alt="hyper"></p>
+<h2 id="Pseudo-code"><a href="#Pseudo-code" class="headerlink" title="Pseudo code"></a>Pseudo code</h2><h3 id="Experiments-Tutorial"><a href="#Experiments-Tutorial" class="headerlink" title="Experiments Tutorial"></a>Experiments Tutorial</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/exp.png" alt="exp"></p>
+<h3 id="ASHA"><a href="#ASHA" class="headerlink" title="ASHA"></a>ASHA</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/ASHAp.png" alt="ASHAp"></p>
+<h3 id="HyperSched"><a href="#HyperSched" class="headerlink" title="HyperSched"></a>HyperSched</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/hyper.png" alt="hyper"></p>
 <h1 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h1><h2 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h2><ol>
 <li>Application-level</li>
 <li>A dynamic  scheduling framework addressed on hyper-parameter search</li>
