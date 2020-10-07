@@ -14,10 +14,17 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="This paper is published on SoCC’19. It focus on an application-level optimization of the hyper-parameter search. Compared to the state-of-the-art algorithm, this algorithm can manage the exploration a">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cbaseline.png">
+<meta property="og:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Casha.png">
+<meta property="og:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Coverview.png">
+<meta property="og:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cexp.png">
+<meta property="og:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5CASHAp.png">
+<meta property="og:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Chyper.png">
 <meta property="article:published_time" content="2020-10-07T06:41:03.000Z">
-<meta property="article:modified_time" content="2020-10-07T07:05:44.305Z">
+<meta property="article:modified_time" content="2020-10-07T08:59:53.780Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cbaseline.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -95,6 +102,128 @@
 <h3 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h3><p><strong>Exploration:</strong> Identify the best-performing hyper-parameter configuration <strong>(trial)</strong></p>
 <p><strong>Exploitation:</strong> maximally provision resource to promising trial.</p>
 <p><strong>Trade-off:</strong> between Exploration and Exploitation.</p>
+<h2 id="Key-Idea"><a href="#Key-Idea" class="headerlink" title="Key Idea"></a>Key Idea</h2><ol>
+<li><p>At the final deadline, only one model configuration is useful, so the results of all other configurations are <strong>disposable</strong>: </p>
+<p>During the hyper-parameter search procedure, users or hyper-parameter optimization algorithms will use results from individual trials to decide whether to prioritize a certain trial or terminate the execution of a trial.</p>
+</li>
+<li><p>In experiment progresses, promising configurations are <strong>progressively identifiable</strong>:</p>
+<p>Though each parameter configuration must be at least partially trained to identify the top performers, a fraction of the designs can be quickly eliminated without significant training. Further, for configurations without enough information to classify as promising or poor, we note that there is a generally convergent behavior of deep learning training as more epochs are processed. This presents a dynamic trade-off space between the cost of exploring more jobs against the risk of concentrating all resources in a promising job.</p>
+</li>
+<li><p><strong>Awareness of resource and time constraints</strong> optimize resource allocation decisions: </p>
+<p>Hyper-parameter tuning under time and resource constraints is naturally a constrained optimization problem. While individual trials can execute faster given more resources, it is also critical that the time and resource constraints are jointly considered, allowing the optimization algorithm to better toggle between exploration, where new trials are evaluated, and exploitation, where promising trials are allocated more resources. At a high level, by utilizing the knowledge of these constraints, <strong>HyperSched</strong> can adaptively dedicate more space-time resources to be used for accelerated training of progressively fewer trials, eventually.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ol>
+<li>Introduce <strong>HyperSched</strong>, a dynamic application-level resource allocation scheduler.</li>
+<li>Implement <strong>HyperSched</strong> as a scheduler of <a target="_blank" rel="noopener" href="http://ray.readthedocs.io/en/latest/tune.html">Tune</a></li>
+<li>Demonstrate significant improvements compared to <a target="_blank" rel="noopener" href="http://learningsys.org/nips18/assets/papers/41CameraReadySubmissionparallel.pdf">ASHA</a></li>
+</ol>
+</li>
+</ol>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><h2 id="Distributed-Machine-Learning"><a href="#Distributed-Machine-Learning" class="headerlink" title="Distributed Machine Learning"></a>Distributed Machine Learning</h2><ol>
+<li>Parallel training</li>
+<li>Parallel hyper-parameter search</li>
+</ol>
+<h2 id="Exploitation-vs-Exploration"><a href="#Exploitation-vs-Exploration" class="headerlink" title="Exploitation vs Exploration"></a>Exploitation vs Exploration</h2><h2 id="Problem-and-Assumption"><a href="#Problem-and-Assumption" class="headerlink" title="Problem and Assumption"></a>Problem and Assumption</h2><ol>
+<li>Trials are assumed to be disposable</li>
+<li>Cluster fairness is not a design goal</li>
+<li>Parallelizable training: all trials have the same scaling properties</li>
+<li>Framework-specific assumptions:  intermediate training progress and checkpoint</li>
+</ol>
+<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p>/<img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cbaseline.png"></p>
+<p>​                                                <strong>Figure 1: Algorithm Procedure of HyerSched and Baselines</strong></p>
+<p>In this paper,authors choose two baseline algorithms: shallow and asynchronous successive halving. Figure 1 shows the procedure of these algorithms. It can be observed that there are some limitations in the state-of-the-art algorithms:</p>
+<ol>
+<li><p><strong>Shallow:</strong> fixed division of exploration and explotation, can not find a optimal trail</p>
+</li>
+<li><p><strong>ASHA:</strong> deadline-unaware, following the simple resource fairness</p>
+<p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Casha.png" alt="asha"></p>
+<p>​                                                                <strong>Figure 2: ASHA Procedure</strong></p>
+</li>
+</ol>
+<p>Let we focus on the ASHA algorithm, Figure 2 presents the scheduling and searching procedure in details. Paper propose the key parameters in ASHA algorithm as follow:</p>
+<ol>
+<li>R, maximum resource allocation (epochs) per trial</li>
+<li>r, minimum resource allocation (epochs) per trial</li>
+<li>η, reduction factor</li>
+</ol>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>It is obvious that there are several limitations in the ASHA algorithm, so authors propose a new algotithm <strong>HyperSched</strong>. The motivations in details is proposed:</p>
+<ol>
+<li><p>ASHA is deadline-unaware, and continue starting new trials.</p>
+</li>
+<li><p>ASHA is its pausing criteria</p>
+</li>
+<li><p>Lack of specifical time allocation for actual exploitation of the identified trial</p>
+</li>
+<li><p>Accelerate specific trials by dynamically allocating more resource:</p>
+<p>However, allocating more resource must face two challenges:</p>
+<p>​    a.  scale-aware:  scaling does not necessarily increase linearly</p>
+<p>​    b.  overhead-aware: checkpoint, restore, network, communication</p>
+</li>
+</ol>
+<h1 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h1><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Coverview.png" alt="overview"></p>
+<p>​                                                                        Figure 3: Overview</p>
+<p>Figure 3 shows the overview architecture of the HyperSched. In this section,  authors demonstrate the key design ideas and key technologies.</p>
+<h2 id="Key-Technology"><a href="#Key-Technology" class="headerlink" title="Key Technology"></a>Key Technology</h2><ol>
+<li>Deadline-aware exploration policy</li>
+<li>Dynamically resource reallocation to promising training trials.</li>
+</ol>
+<h2 id="Key-Parameters"><a href="#Key-Parameters" class="headerlink" title="Key Parameters"></a>Key Parameters</h2><ol>
+<li>atom:  a logical unit of resource allocation specified by users</li>
+<li>s(a): Scaling function mapping atoms to epochs per second</li>
+<li>Deadline T </li>
+<li>Resource atoms N </li>
+<li>Minimum resource allocation r (same as ASHA)</li>
+<li>Maximum resource allocation R (same as ASHA)</li>
+<li>Reduction factor η (same as ASHA)</li>
+</ol>
+<h2 id="Exploration"><a href="#Exploration" class="headerlink" title="Exploration"></a>Exploration</h2><h3 id="Speculative-evaluation"><a href="#Speculative-evaluation" class="headerlink" title="Speculative evaluation"></a>Speculative evaluation</h3><ol>
+<li>At each evaluation point/rung, HyperSched will pause a trial if it is not in the top 1/η of all currently <strong>seen</strong> trials of that rung.</li>
+<li>A rung’s first arrived trials are not paused to avoid  head-of-line blocking.</li>
+</ol>
+<h3 id="HyperSched-Entrance-Policy"><a href="#HyperSched-Entrance-Policy" class="headerlink" title="HyperSched Entrance Policy"></a>HyperSched Entrance Policy</h3><ol>
+<li><p>Stop running new configurations after a certain threshold.</p>
+</li>
+<li><p>Threshold definition:</p>
+<p>​    </p>
+</li>
+</ol>
+<p>$$<br>\left{R * T_{a}, \eta T^{\prime}\right}&lt;T_{n}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>&amp;T_{a}\text{: the time per epoch using one atom<br>}\<br>&amp;T_{n}\text{: the time left until the deadline<br>}\<br>&amp;T^{\prime}\text{: the longest duration of eachrunning trial<br>}<br>\end{aligned}<br>$$</p>
+<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><h3 id="Dynamic-Resource-Allocation"><a href="#Dynamic-Resource-Allocation" class="headerlink" title="Dynamic Resource Allocation"></a>Dynamic Resource Allocation</h3><ol>
+<li>Atoms are uniformly allocated across the currently running trials</li>
+<li>A more exploitative policy such as one that allocates all resources to the top trial may be more effective</li>
+</ol>
+<h3 id="Accounting-for-Overheads"><a href="#Accounting-for-Overheads" class="headerlink" title="Accounting for Overheads"></a>Accounting for Overheads</h3><ol>
+<li><p>Heuristic algorithm</p>
+</li>
+<li><p>Sampling evaluation: profile scaling before beginning the search by sampling different trials</p>
+</li>
+<li><p>Threshold Policy Definition for a job:<br>$$<br>H^{\prime}\left(T-T_{o}\right)&gt;H T<br>$$</p>
+</li>
+</ol>
+<p>$$<br>\begin{aligned}<br>&amp;T_{o}\text{: startup time}\<br>&amp;T\text{: the time left until deadline}\<br>&amp;H\text{: epochs per second of training procedure with current allocation.}\<br>&amp;H^{\prime}\text{: epochs per second of training procedure with proposed allocation}<br>\end{aligned}<br>$$</p>
+<h1 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h1><h2 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h2><ol>
+<li><strong><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/walkthrough.html">Ray</a>:</strong> a distributed execution engine</li>
+<li>**Tensorflow, Pytorch: **popular deep learning toolkits</li>
+</ol>
+<h2 id="Pseudo-code"><a href="#Pseudo-code" class="headerlink" title="Pseudo code"></a>Pseudo code</h2><h3 id="Experiments-Tutorial"><a href="#Experiments-Tutorial" class="headerlink" title="Experiments Tutorial"></a>Experiments Tutorial</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Cexp.png" alt="exp"></p>
+<h3 id="ASHA"><a href="#ASHA" class="headerlink" title="ASHA"></a>ASHA</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5CASHAp.png" alt="ASHAp"></p>
+<h3 id="HyperSched"><a href="#HyperSched" class="headerlink" title="HyperSched"></a>HyperSched</h3><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19%5Chyper.png" alt="hyper"></p>
+<h1 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h1><h2 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h2><ol>
+<li>Application-level</li>
+<li>A dynamic  scheduling framework addressed on hyper-parameter search</li>
+</ol>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><ol>
+<li><p>Lack of custom support for the system</p>
+</li>
+<li><p>Do not implementation in an cluster</p>
+</li>
+<li><p>Over-samplified the training process</p>
+</li>
+<li><p>Lack of optimization for the resource reallocation</p>
+<p>a. Resource uniformly allocation but not be preferable to the promising trials</p>
+<p>b. The optimization between allocation to new trial, paused trial and running trail</p>
+</li>
+</ol>
 
       
     </div>
