@@ -120,14 +120,15 @@
 <li>Framework-specific assumptions:  intermediate training progress and checkpoint</li>
 </ol>
 <h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/baseline.png" alt></p>
-<p>​                                                <strong>Figure 1: Algorithm Procedure of HyerSched and Baselines</strong></p>
+<p>​                            <center>**Figure 1: Algorithm Procedure of HyerSched and Baselines**</center></p>
 <p>In this paper,authors choose two baseline algorithms: shallow and asynchronous successive halving. Figure 1 shows the procedure of these algorithms. It can be observed that there are some limitations in the state-of-the-art algorithms:</p>
 <ol>
 <li><p><strong>Shallow:</strong> fixed division of exploration and exploitation, can not find a optimal trail</p>
 </li>
 <li><p><strong>ASHA:</strong> deadline-unaware, following the simple resource fairness</p>
 <p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/asha.png" alt="asha"></p>
-<p>​                                                                <strong>Figure 2: ASHA Procedure</strong></p>
+<center>**Figure 2: ASHA Procedure**</center>
+
 </li>
 </ol>
 <p>Let we focus on the ASHA algorithm, Figure 2 presents the scheduling and searching procedure in details. Paper propose the key parameters in ASHA algorithm as follow:</p>
@@ -151,7 +152,7 @@
 </li>
 </ol>
 <h1 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h1><p><img src="/2020/10/07/HyperSched-Dynamic-Resource-Reallocation-for-Model-Development-on-a-Deadline-SoCC19/overview.png" alt="overview"></p>
-<p>​                                                                        Figure 3: Overview</p>
+<p>​                                                                        <center>**Figure 3: Overview**</center></p>
 <p>Figure 3 shows the overview architecture of the HyperSched. In this section,  authors demonstrate the key design ideas and key technologies.</p>
 <h2 id="Key-Technology"><a href="#Key-Technology" class="headerlink" title="Key Technology"></a>Key Technology</h2><ol>
 <li>Deadline-aware exploration policy</li>
